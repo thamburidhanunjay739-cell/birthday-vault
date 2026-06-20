@@ -460,11 +460,10 @@ function GateScreen({ onUnlock, dateStr, timeStr }: { onUnlock: () => void; date
         position: "relative", zIndex: 10,
       }}>
         <div style={{
-          width: "36px", height: "36px", background: INK, borderRadius: "8px",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: BG, fontFamily: "'Barlow Condensed', sans-serif",
-          fontWeight: 900, fontSize: "17px", letterSpacing: "-1px",
-        }}>BV</div>
+          width: "36px", height: "36px", position: "relative", overflow: "hidden", borderRadius: "8px"
+        }}>
+          <Image src="/logo1.jpeg" alt="Logo" fill style={{ objectFit: "cover" }} />
+        </div>
         <span style={{
           fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
           fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase",
@@ -583,11 +582,10 @@ function Header({ scrolled, visible, muted, onToggleMute }: { scrolled: boolean;
       transition: "transform 0.3s ease, background 0.35s ease, backdrop-filter 0.35s ease, border-bottom 0.35s ease",
     }}>
       <div style={{
-        width: "40px", height: "40px", background: INK, borderRadius: "8px",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color: BG, fontFamily: "'Barlow Condensed', sans-serif",
-        fontWeight: 900, fontSize: "17px", letterSpacing: "-1px",
-      }}>BV</div>
+        width: "40px", height: "40px", position: "relative", overflow: "hidden", borderRadius: "8px"
+      }}>
+        <Image src="/logo1.jpeg" alt="Logo" fill style={{ objectFit: "cover" }} />
+      </div>
 
       <nav className="nav-links">
         {[{ label: "Our Story", href: "#story" }, { label: "Memories", href: "#gallery" }, { label: "A Letter", href: "#letter" }].map(link => (
@@ -1712,7 +1710,7 @@ function AgeTimerSection() {
 
 
 /* ─── BIRTHDAY CAKE WITH BLOW-OUT CANDLES ───────────────────────────────── */
-function BirthdayCake({ onFire, onCut }: { onFire: (opts?: { type?: "default" | "hearts"; x?: number; y?: number }) => void, onCut?: () => void }) {
+function BirthdayCake({ onFire, onCut, onCutComplete }: { onFire: (opts?: { type?: "default" | "hearts"; x?: number; y?: number }) => void, onCut?: () => void, onCutComplete?: () => void }) {
   const [blown, setBlown] = useState(false);
   const [candles, setCandles] = useState([true, true, true, true, true]);
   const [cutStatus, setCutStatus] = useState<"uncut" | "cutting" | "cut">("uncut");
@@ -1772,6 +1770,7 @@ function BirthdayCake({ onFire, onCut }: { onFire: (opts?: { type?: "default" | 
         y = rect.top + rect.height / 2;
       }
       onFire({ type: "default", x, y });
+      onCutComplete?.();
     }, 700);
   };
 
@@ -2504,6 +2503,311 @@ function ScratchCard({ name, secretMessage }: { name: string; secretMessage: str
   );
 }
 
+interface WishesVideoProps {
+  onVideoPlayingChange?: (isPlaying: boolean) => void;
+}
+
+function WishesVideo({ onVideoPlayingChange }: WishesVideoProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [isBuffering, setIsBuffering] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const startPlay = async () => {
+      try {
+        video.muted = true;
+        setIsMuted(true);
+        await video.play();
+        setIsPlaying(true);
+        onVideoPlayingChange?.(true);
+        
+        setTimeout(async () => {
+          try {
+            video.muted = false;
+            setIsMuted(false);
+          } catch (e) {
+            console.log("Could not auto-unmute:", e);
+          }
+        }, 100);
+      } catch (error) {
+        console.log("Autoplay prevented:", error);
+        setIsPlaying(false);
+        onVideoPlayingChange?.(false);
+      }
+    };
+
+    const t = setTimeout(startPlay, 1000);
+    return () => clearTimeout(t);
+  }, [onVideoPlayingChange]);
+
+  const handlePlayPause = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play()
+        .then(() => {
+          setIsPlaying(true);
+          onVideoPlayingChange?.(true);
+        })
+        .catch(err => console.log(err));
+    } else {
+      video.pause();
+      setIsPlaying(false);
+      onVideoPlayingChange?.(false);
+    }
+  };
+
+  const handleMuteUnmute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    setProgress((video.currentTime / video.duration) * 100);
+  };
+
+  const handleVideoEnded = () => {
+    setIsPlaying(false);
+    onVideoPlayingChange?.(false);
+    setProgress(0);
+  };
+
+  return (
+    <div
+      style={{
+        background: "#0a0a0a",
+        borderRadius: "16px",
+        border: `2px solid ${GOLD}`,
+        boxShadow: isPlaying 
+          ? `0 20px 50px rgba(201, 168, 76, 0.25)` 
+          : "0 10px 30px rgba(0, 0, 0, 0.5)",
+        overflow: "hidden",
+        position: "relative",
+        transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        width: "100%",
+        aspectRatio: "9/16",
+      }}
+    >
+      {/* Buffering/Loading Indicator */}
+      {isBuffering && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(10, 10, 10, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: GOLD,
+            zIndex: 9,
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              border: `3px solid rgba(201, 168, 76, 0.25)`,
+              borderTop: `3px solid ${GOLD}`,
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+              marginBottom: "12px",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 700,
+              fontSize: "13px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              textAlign: "center",
+            }}
+          >
+            Buffering Wishes (68MB file)...
+          </span>
+        </div>
+      )}
+
+      <video
+        ref={videoRef}
+        src="/wishesvideo.mp4"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleVideoEnded}
+        onClick={handlePlayPause}
+        onWaiting={() => setIsBuffering(true)}
+        onPlaying={() => setIsBuffering(false)}
+        onCanPlay={() => setIsBuffering(false)}
+        onCanPlayThrough={() => setIsBuffering(false)}
+        onLoadStart={() => setIsBuffering(true)}
+        onError={() => setIsBuffering(false)}
+        playsInline
+      />
+
+      {isMuted && isPlaying && (
+        <div
+          onClick={handleMuteUnmute}
+          style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            background: "rgba(10, 10, 10, 0.75)",
+            border: `1px solid ${GOLD}`,
+            borderRadius: "8px",
+            padding: "6px 12px",
+            color: GOLD,
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontWeight: 700,
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            zIndex: 10,
+            animation: "pulse-mute 1.5s infinite",
+            userSelect: "none",
+          }}
+        >
+          <span>🔊</span> Click to Unmute
+        </div>
+      )}
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          background: "linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.4) 70%, transparent 100%)",
+          padding: "1rem 1.25rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+          opacity: 1,
+          transition: "opacity 0.3s ease",
+          zIndex: 8,
+        }}
+      >
+        <div
+          onClick={(e) => {
+            const video = videoRef.current;
+            if (!video) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const newTime = (clickX / rect.width) * video.duration;
+            video.currentTime = newTime;
+          }}
+          style={{
+            width: "100%",
+            height: "4px",
+            background: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "2px",
+            cursor: "pointer",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              width: `${progress}%`,
+              background: GOLD,
+              borderRadius: "2px",
+              transition: "width 0.1s linear",
+            }}
+          />
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <button
+              onClick={handlePlayPause}
+              style={{
+                background: "none",
+                border: "none",
+                color: BG,
+                fontSize: "16px",
+                cursor: "pointer",
+                padding: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = GOLD}
+              onMouseLeave={e => e.currentTarget.style.color = BG}
+            >
+              {isPlaying ? "⏸️" : "▶️"}
+            </button>
+
+            <button
+              onClick={handleMuteUnmute}
+              style={{
+                background: "none",
+                border: "none",
+                color: BG,
+                fontSize: "16px",
+                cursor: "pointer",
+                padding: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = GOLD}
+              onMouseLeave={e => e.currentTarget.style.color = BG}
+            >
+              {isMuted ? "🔇" : "🔊"}
+            </button>
+
+            <span
+              style={{
+                fontFamily: "'Barlow Condensed', sans-serif",
+                fontWeight: 700,
+                fontSize: "12px",
+                letterSpacing: "0.08em",
+                color: GOLD,
+                textTransform: "uppercase",
+              }}
+            >
+              🎬 A Special Message for You
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes spin {
+          0%   { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse-mute {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(201, 168, 76, 0); }
+          50%      { transform: scale(1.03); box-shadow: 0 0 12px rgba(201, 168, 76, 0.4); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 /* ─── LETTER ──────────────────────────────────────────────────────────────── */
 function LetterSection({
   dateStr,
@@ -2511,12 +2815,14 @@ function LetterSection({
   onCakeVisibleChange,
   onLetterVisibleChange,
   onCakeCut,
+  onVideoPlayingChange,
 }: {
   dateStr: string;
   onFire: (opts?: { type?: "default" | "hearts"; x?: number; y?: number }) => void;
   onCakeVisibleChange?: (visible: boolean) => void;
   onLetterVisibleChange?: (visible: boolean) => void;
   onCakeCut?: () => void;
+  onVideoPlayingChange?: (isPlaying: boolean) => void;
 }) {
   const [shown, setShown] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -2524,6 +2830,7 @@ function LetterSection({
   const cakeContainerRef = useRef<HTMLDivElement>(null);
   const letterContainerRef = useRef<HTMLDivElement>(null);
   const started = useRef(false);
+  const [isCakeFullyCut, setIsCakeFullyCut] = useState(false);
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
@@ -2564,27 +2871,8 @@ function LetterSection({
       {/* Floating Gold Dust Backdrop */}
       {visible && <GoldDust />}
 
-      {/* Cake centered horizontally */}
-      <div
-        ref={cakeContainerRef}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          padding: "5rem 2rem 2rem",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "scale(1)" : "scale(0.95)",
-          transition: "opacity 0.6s ease, transform 0.6s ease",
-          position: "relative",
-          zIndex: 5,
-        }}
-      >
-        {visible && <BirthdayCake onFire={onFire} onCut={onCakeCut} />}
-      </div>
-
       {/* Section Header */}
-      <div style={{ padding: "3rem 3rem 1rem", maxWidth: "1280px", margin: "0 auto", position: "relative", zIndex: 5 }}>
+      <div style={{ padding: "5rem 3rem 1.5rem", maxWidth: "1280px", margin: "0 auto", position: "relative", zIndex: 5 }}>
         <div style={{ padding: "0 0 2rem 0", borderBottom: `1px solid rgba(255,255,255,0.07)`, marginBottom: "2rem" }}>
           <p style={{
             fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
@@ -2619,7 +2907,74 @@ function LetterSection({
             </span>
           </h2>
         </div>
+      </div>
 
+      {/* Cake and Video Container */}
+      <div
+        ref={cakeContainerRef}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "1rem 2rem 3rem",
+          gap: "6.5rem",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "scale(1)" : "scale(0.95)",
+          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+          position: "relative",
+          zIndex: 5,
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          style={{
+            flex: isCakeFullyCut ? "1 1 350px" : "0 1 480px",
+            maxWidth: isCakeFullyCut ? "450px" : "480px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        >
+          {visible && (
+            <BirthdayCake 
+              onFire={onFire} 
+              onCut={onCakeCut} 
+              onCutComplete={() => setIsCakeFullyCut(true)} 
+            />
+          )}
+        </div>
+
+        {isCakeFullyCut && (
+          <div
+            style={{
+              flex: "1 1 280px",
+              maxWidth: "340px",
+              width: "100%",
+              opacity: 0,
+              transform: "translateY(20px)",
+              animation: "video-slide-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards",
+            }}
+          >
+            <WishesVideo onVideoPlayingChange={onVideoPlayingChange} />
+          </div>
+        )}
+      </div>
+
+      <style>{`
+        @keyframes video-slide-in {
+          from { opacity: 0; transform: translateY(30px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      {/* Wishes and Blessings Section */}
+      <div style={{ padding: "2rem 3rem 1rem", maxWidth: "1280px", margin: "0 auto", position: "relative", zIndex: 5 }}>
         {/* ── Scratch Cards — horizontal grid ABOVE the letter ── */}
         {visible && (
           <div style={{ marginBottom: "3.5rem", animation: "seal-pop 0.8s cubic-bezier(.16,1,.3,1) both" }}>
@@ -2627,12 +2982,12 @@ function LetterSection({
             <div style={{ display: "flex", alignItems: "baseline", gap: "1rem", marginBottom: "1rem" }}>
               <p style={{
                 fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
-                fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase",
+                fontSize: "15px", letterSpacing: "0.25em", textTransform: "uppercase",
                 color: GOLD,
               }}>Wishes & Blessings</p>
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                fontSize: "11px", color: "rgba(255,255,255,0.35)",
+                fontSize: "12px", color: "rgba(255,255,255,0.35)",
               }}>· Scratch each gold card to reveal</p>
             </div>
 
@@ -2666,46 +3021,72 @@ function LetterSection({
         }}
       >
         <div style={{ maxWidth: "720px" }}>
-          {LETTER.map((line, i) => (
-            <div key={i} style={{
-              opacity: shown > i ? 1 : 0,
-              transform: shown > i ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity 0.6s ease, transform 0.6s ease",
-              marginBottom: line.style === "opener" ? "2.5rem" : line.style === "closer" ? "0" : line.style === "highlight" ? "1.8rem" : "1.4rem",
-              ...(line.style === "highlight" ? { borderLeft: `3px solid ${GOLD}`, paddingLeft: "1.5rem" } : {}),
-            }}>
-              <p style={{
-                fontFamily: line.style === "opener" || line.style === "closer" ? "'Barlow Condensed', sans-serif" : "'Inter', sans-serif",
-                fontWeight: line.style === "opener" || line.style === "closer" ? 900 : line.style === "highlight" ? 400 : 300,
-                fontSize: line.style === "opener" ? "1.5rem" : line.style === "closer" ? "1.2rem" : line.style === "highlight" ? "1rem" : "0.92rem",
-                lineHeight: 1.9,
-                color: line.style === "highlight" ? GOLD : line.style === "opener" || line.style === "closer" ? `rgba(201,168,76,0.85)` : "rgba(255,251,235,0.52)",
-                textTransform: line.style === "opener" || line.style === "closer" ? "uppercase" : "none",
-                letterSpacing: line.style === "opener" || line.style === "closer" ? "0.05em" : "0",
-              }}>{line.text}</p>
-            </div>
-          ))}
+          {LETTER.map((line, i) => {
+            const isCloser = line.style === "closer";
+            return (
+              <div key={i} style={{
+                opacity: shown > i ? 1 : 0,
+                transform: shown > i ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 0.6s ease, transform 0.6s ease",
+                marginBottom: isCloser ? "0" : line.style === "opener" ? "2.5rem" : line.style === "highlight" ? "1.8rem" : "1.4rem",
+                ...(line.style === "highlight" ? { borderLeft: `5px solid ${GOLD}`, paddingLeft: "1.5rem" } : {}),
+              }}>
+                {isCloser ? (
+                  <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                    {/* Text before logo */}
+                    <p style={{
+                      fontFamily: "'Barlow Condensed', sans-serif",
+                      fontWeight: 900,
+                      fontSize: "1.2rem",
+                      color: `rgba(201,168,76,0.85)`,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      lineHeight: 1.6,
+                    }}>— With everything I have 🤝</p>
 
-          {shown >= LETTER.length && (
-            <div style={{
-              animation: "seal-pop 0.6s cubic-bezier(.16,1,.3,1)",
-              marginTop: "3rem", paddingTop: "2rem",
-              borderTop: `1px solid rgba(255,255,255,0.07)`,
-              display: "flex", alignItems: "center", gap: "1rem",
-            }}>
-              <span style={{ fontSize: "2.5rem", animation: "heartbeat 2s ease-in-out infinite", display: "inline-block" }}>🎂</span>
-              <div>
-                <p style={{
-                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
-                  fontSize: "1.2rem", color: BG, textTransform: "uppercase", letterSpacing: "0.1em",
-                }}>Happy Birthday, {FRIEND_NAME}</p>
-                <p style={{
-                  fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                  fontSize: "11px", color: "rgba(255,255,255,0.28)", letterSpacing: "0.1em",
-                }}>Sealed with love · Just for you</p>
+                    {/* Logo */}
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <div style={{ width: "80px", height: "80px", position: "relative", overflow: "hidden", borderRadius: "50%", border: `2px solid ${GOLD}`, flexShrink: 0, boxShadow: `0 0 20px rgba(201,168,76,0.3)` }}>
+                        <Image src="/logo1.jpeg" alt="Signature Logo" fill style={{ objectFit: "cover" }} />
+                      </div>
+                    </div>
+
+                    {/* Wish text after logo */}
+                    <div>
+                      <p style={{
+                        fontFamily: "'Barlow Condensed', sans-serif",
+                        fontWeight: 900,
+                        fontSize: "1.2rem",
+                        color: BG,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.1em",
+                      }}>Happy Birthday, {FRIEND_NAME} ❤️</p>
+                      <p style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 300,
+                        fontSize: "11px",
+                        color: "rgba(255,255,255,0.28)",
+                        letterSpacing: "0.1em",
+                        marginTop: "4px",
+                      }}>Sealed with love · Just for you</p>
+                    </div>
+                  </div>
+                ) : (
+                  <p style={{
+                    fontFamily: line.style === "opener" ? "'Barlow Condensed', sans-serif" : "'Inter', sans-serif",
+                    fontWeight: line.style === "opener" ? 900 : line.style === "highlight" ? 400 : 300,
+                    fontSize: line.style === "opener" ? "1.5rem" : line.style === "highlight" ? "1rem" : "0.92rem",
+                    lineHeight: 1.9,
+                    color: line.style === "highlight" ? GOLD : line.style === "opener" ? `rgba(201,168,76,0.85)` : "rgba(255,251,235,0.52)",
+                    textTransform: line.style === "opener" ? "uppercase" : "none",
+                    letterSpacing: line.style === "opener" ? "0.05em" : "0",
+                  }}>{line.text}</p>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })}
+
+
         </div>
       </div>
 
@@ -2796,6 +3177,7 @@ export default function VaultPage() {
   const [cakeVisible, setCakeVisible] = useState(false);
   const [letterVisible, setLetterVisible] = useState(false);
   const [cakeCut, setCakeCut] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const lastScrollY = useRef(0);
   const { canvasRef, fire, cleanup } = useConfetti();
 
@@ -2881,9 +3263,9 @@ export default function VaultPage() {
     bdayAudio.muted = false;
 
     // Should play birthday song if cake is visible (plays until cake is fully scrolled out of view)
-    const shouldPlayBday = cakeVisible;
+    const shouldPlayBday = cakeVisible && !isVideoPlaying;
     // Should play main background music if cake is not visible and letter is not visible
-    const shouldPlayMain = !cakeVisible && !letterVisible;
+    const shouldPlayMain = !cakeVisible && !letterVisible && !isVideoPlaying;
 
     if (shouldPlayBday) {
       fadeAudio(mainAudio, 0, 800);
@@ -2892,7 +3274,7 @@ export default function VaultPage() {
       fadeAudio(bdayAudio, 0, 800);
       fadeAudio(mainAudio, 0.45, 800);
     } else {
-      // Silence during letter reading (cake is gone, letter is visible)
+      // Silence during letter reading (cake is gone, letter is visible) or when wishes video is playing
       fadeAudio(mainAudio, 0, 800);
       fadeAudio(bdayAudio, 0, 800);
     }
@@ -2901,7 +3283,7 @@ export default function VaultPage() {
       if ((mainAudio as any).fadeInterval) clearInterval((mainAudio as any).fadeInterval);
       if ((bdayAudio as any).fadeInterval) clearInterval((bdayAudio as any).fadeInterval);
     };
-  }, [unlocked, muted, cakeVisible, letterVisible, cakeCut]);
+  }, [unlocked, muted, cakeVisible, letterVisible, cakeCut, isVideoPlaying]);
 
   const handleToggleMute = useCallback(() => {
     setMuted(prev => !prev);
@@ -2940,6 +3322,7 @@ export default function VaultPage() {
         onCakeVisibleChange={setCakeVisible}
         onLetterVisibleChange={setLetterVisible}
         onCakeCut={() => setCakeCut(true)}
+        onVideoPlayingChange={setIsVideoPlaying}
       />
       <FloatingHeart onFire={fire} />
     </div>
