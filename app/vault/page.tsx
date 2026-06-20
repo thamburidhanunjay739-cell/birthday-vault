@@ -827,7 +827,7 @@ function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: s
                 fontFamily: "'Inter', sans-serif", fontWeight: 300,
                 fontSize: "13px", color: "rgba(0,0,0,0.5)", lineHeight: 1.75,
               }}>
-                Five years of PharmD. A thousand memories. One vault — built from everything we shared, sealed just for you.
+                From strangers to best friends !!! Not just memories captured but moments lived to the fullest
               </p>
             </div>
 
@@ -904,10 +904,7 @@ function StorySection() {
       <Ticker />
 
       {/* Header */}
-      <div style={{
-        padding: "5rem 3rem 2rem",
-        borderBottom: `1px solid rgba(0,0,0,0.08)`,
-      }}>
+      <div className="story-header-pad">
         <p style={{
           fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
           fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase",
@@ -1088,11 +1085,9 @@ function GallerySection() {
   return (
     <section id="gallery" ref={ref} style={{ background: INK }}>
       {/* Header */}
-      <div style={{
-        padding: "5rem 3rem 2rem",
+      <div className="section-header-pad gallery-header-row" style={{
         borderTop: `1px solid rgba(255,255,255,0.08)`,
         borderBottom: `1px solid rgba(255,255,255,0.08)`,
-        display: "flex", alignItems: "flex-end", justifyContent: "space-between",
         opacity: visible ? 1 : 0, transition: "opacity 0.7s ease",
       }}>
         <div>
@@ -1110,7 +1105,7 @@ function GallerySection() {
             <span style={{ display: "block" }}><InteractiveText text="Frozen in time" baseColor={BG} /></span>
           </h2>
         </div>
-        <p style={{
+        <p className="gallery-desc-text" style={{
           fontFamily: "'Inter', sans-serif", fontWeight: 300,
           fontSize: "13px", color: "rgba(255,255,255,0.55)",
           maxWidth: "200px", textAlign: "right", lineHeight: 1.75,
@@ -1258,19 +1253,44 @@ function GallerySection() {
             </div>
 
             {/* Nav buttons */}
-            {[
-              { label: "✕", pos: { top: "-14px", right: "-14px" } as React.CSSProperties, fn: () => setLightbox(null) },
-              { label: "←", pos: { left: "-52px", top: "40%" } as React.CSSProperties, fn: () => setLightbox((lightbox - 1 + PHOTOS.length) % PHOTOS.length) },
-              { label: "→", pos: { right: "-52px", top: "40%" } as React.CSSProperties, fn: () => setLightbox((lightbox + 1) % PHOTOS.length) },
-            ].map(btn => (
-              <button key={btn.label} onClick={btn.fn} style={{
+            {/* Close — always visible */}
+            <button onClick={() => setLightbox(null)} style={{
+              position: "absolute", top: "-14px", right: "-14px",
+              width: "40px", height: "40px", borderRadius: "50%",
+              background: BG, border: "none", color: INK,
+              cursor: "pointer", fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 900, fontSize: "16px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "all 0.2s", boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = GOLD; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = BG; }}
+            >✕</button>
+            {/* Side arrows — hidden on mobile via CSS, shown on wider screens */}
+            {[{ label: "←", pos: { left: "-52px", top: "40%" } as React.CSSProperties, fn: () => setLightbox((lightbox - 1 + PHOTOS.length) % PHOTOS.length) },
+              { label: "→", pos: { right: "-52px", top: "40%" } as React.CSSProperties, fn: () => setLightbox((lightbox + 1) % PHOTOS.length) }].map(btn => (
+              <button key={btn.label} onClick={btn.fn} className="lb-nav-side" style={{
                 position: "absolute", ...btn.pos,
                 width: "40px", height: "40px", borderRadius: "50%",
                 background: BG, border: "none", color: INK,
                 cursor: "pointer", fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 900, fontSize: "16px",
-                display: "flex", alignItems: "center", justifyContent: "center",
                 transition: "all 0.2s", boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = GOLD; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = BG; }}
+              >{btn.label}</button>
+            ))}
+          </div>
+          {/* Mobile prev/next row — shown only on narrow screens */}
+          <div className="lb-mobile-nav">
+            {[{ label: "← Prev", fn: () => setLightbox((lightbox - 1 + PHOTOS.length) % PHOTOS.length) },
+              { label: "Next →", fn: () => setLightbox((lightbox + 1) % PHOTOS.length) }].map(btn => (
+              <button key={btn.label} onClick={btn.fn} style={{
+                background: BG, border: "none", color: INK, borderRadius: "8px",
+                padding: "10px 22px", fontFamily: "'Barlow Condensed', sans-serif",
+                fontWeight: 900, fontSize: "13px", cursor: "pointer",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.3)", letterSpacing: "0.08em",
               }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = GOLD; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = BG; }}
@@ -1361,7 +1381,7 @@ function AgeTimerSection() {
   });
 
   return (
-    <section ref={ref} style={{ background: BG, padding: "6rem 2rem", borderTop: `1px solid rgba(0,0,0,0.06)` }}>
+    <section ref={ref} className="age-timer-section">
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
         
         {/* Header Title for the Section */}
@@ -2873,7 +2893,7 @@ function LetterSection({
       {visible && <GoldDust />}
 
       {/* Section Header */}
-      <div style={{ padding: "5rem 3rem 1.5rem", maxWidth: "1280px", margin: "0 auto", position: "relative", zIndex: 5 }}>
+      <div className="letter-header-pad">
         <div style={{ padding: "0 0 2rem 0", borderBottom: `1px solid rgba(255,255,255,0.07)`, marginBottom: "2rem" }}>
           <p style={{
             fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
@@ -2916,35 +2936,14 @@ function LetterSection({
       {/* Cake and Video Container */}
       <div
         ref={cakeContainerRef}
+        className="cake-video-row"
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "1rem 2rem 3rem",
-          gap: "6.5rem",
           opacity: visible ? 1 : 0,
           transform: visible ? "scale(1)" : "scale(0.95)",
           transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          position: "relative",
-          zIndex: 5,
-          flexWrap: "wrap",
         }}
       >
-        <div
-          style={{
-            flex: isCakeFullyCut ? "1 1 350px" : "0 1 480px",
-            maxWidth: isCakeFullyCut ? "450px" : "480px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        >
+        <div className={isCakeFullyCut ? "cake-wrapper-cut" : "cake-wrapper"}>
           {visible && (
             <BirthdayCake 
               onFire={onFire} 
@@ -2956,10 +2955,8 @@ function LetterSection({
 
         {isCakeFullyCut && (
           <div
+            className="video-panel"
             style={{
-              flex: "1 1 280px",
-              maxWidth: "340px",
-              width: "100%",
               opacity: 0,
               transform: "translateY(20px)",
               animation: "video-slide-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards",
@@ -2978,7 +2975,7 @@ function LetterSection({
       `}</style>
 
       {/* Wishes and Blessings Section */}
-      <div style={{ padding: "2rem 3rem 1rem", maxWidth: "1280px", margin: "0 auto", position: "relative", zIndex: 5 }}>
+      <div className="wishes-pad">
         {/* ── Scratch Cards — horizontal grid ABOVE the letter ── */}
         {visible && (
           <div style={{ marginBottom: "3.5rem", animation: "seal-pop 0.8s cubic-bezier(.16,1,.3,1) both" }}>
@@ -2995,13 +2992,8 @@ function LetterSection({
               }}>· Scratch each gold card to reveal</p>
             </div>
 
-            {/* 2-column grid — 4 rows of 2 cards */}
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "1.25rem",
-              width: "100%",
-            }}>
+            {/* Responsive grid — 1 col mobile, 2 col tablet, 3 col desktop */}
+            <div className="scratch-grid">
               {WISHES.map((w, idx) => (
                 <ScratchCard key={idx} name={w.name} secretMessage={w.message} />
               ))}
@@ -3016,13 +3008,7 @@ function LetterSection({
       {/* ── Letter — full width below scratch cards ── */}
       <div
         ref={letterContainerRef}
-        style={{
-          position: "relative",
-          zIndex: 5,
-          padding: "0 3rem 4rem",
-          maxWidth: "1280px",
-          margin: "0 auto",
-        }}
+        className="letter-body-pad"
       >
         <div style={{ maxWidth: "720px" }}>
           {LETTER.map((line, i) => {

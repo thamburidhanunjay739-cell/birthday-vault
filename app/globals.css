@@ -551,3 +551,214 @@ body {
   color: rgba(201, 168, 76, 0.85);
 }
 
+/* ─── MOBILE OPTIMISATIONS ──────────────────────────────────────────────── */
+
+/* Section header padding — tighter on mobile */
+.section-header-pad {
+  padding: 3rem 1.25rem 1.5rem;
+}
+@media (min-width: 769px) {
+  .section-header-pad {
+    padding: 5rem 3rem 2rem;
+  }
+}
+
+/* Gallery header row — allow wrap */
+.gallery-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Hide gallery description text on mobile */
+.gallery-desc-text {
+  display: none;
+}
+@media (min-width: 769px) {
+  .gallery-desc-text {
+    display: block;
+  }
+}
+
+/* Letter section header padding */
+.letter-header-pad {
+  padding: 3rem 1.25rem 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+@media (min-width: 769px) {
+  .letter-header-pad {
+    padding: 5rem 3rem 1.5rem;
+  }
+}
+
+/* Cake + Video row — stack vertically on mobile */
+.cake-video-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+  gap: 2.5rem;
+  position: relative;
+  z-index: 5;
+  flex-wrap: wrap;
+}
+@media (min-width: 769px) {
+  .cake-video-row {
+    flex-direction: row;
+    padding: 1rem 2rem 3rem;
+    gap: 6.5rem;
+  }
+}
+
+/* Cake SVG wrapper */
+.cake-wrapper {
+  flex: 0 1 480px;
+  max-width: 94vw;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 769px) {
+  .cake-wrapper       { max-width: 480px; }
+  .cake-wrapper-cut   { flex: 1 1 350px; max-width: 450px; }
+}
+.cake-wrapper-cut {
+  flex: 1 1 280px;
+  max-width: 94vw;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Video panel that slides in */
+.video-panel {
+  flex: 1 1 280px;
+  width: 100%;
+  max-width: 94vw;
+}
+@media (min-width: 769px) {
+  .video-panel { max-width: 340px; }
+}
+
+/* Scratch-card grid — 1 col mobile, 2 col tablet, 3 col desktop */
+.scratch-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+@media (min-width: 480px) {
+  .scratch-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.1rem;
+  }
+}
+@media (min-width: 900px) {
+  .scratch-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Wishes / scratch section padding */
+.wishes-pad {
+  padding: 2rem 1.25rem 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+@media (min-width: 769px) {
+  .wishes-pad {
+    padding: 2rem 3rem 1rem;
+  }
+}
+
+/* Letter body padding */
+.letter-body-pad {
+  position: relative;
+  z-index: 5;
+  padding: 0 1.25rem 3rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+@media (min-width: 769px) {
+  .letter-body-pad {
+    padding: 0 3rem 4rem;
+  }
+}
+
+/* AgeTimer section padding */
+.age-timer-section {
+  background: var(--bg);
+  padding: 3rem 1.25rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+@media (min-width: 769px) {
+  .age-timer-section {
+    padding: 6rem 2rem;
+  }
+}
+
+/* Lightbox nav buttons — hide side arrows on narrow screens */
+.lb-nav-side {
+  display: none;
+}
+@media (min-width: 600px) {
+  .lb-nav-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Lightbox bottom prev/next — only on narrow screens */
+.lb-mobile-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+@media (min-width: 600px) {
+  .lb-mobile-nav { display: none; }
+}
+
+/* Touch-friendly chapter cards */
+@media (max-width: 768px) {
+  .chapter-card { padding: 1.5rem 1.2rem; }
+  .chapter-card .chapter-year { font-size: 2.8rem !important; }
+}
+
+/* Hero text — no overflow on tiny phones */
+@media (max-width: 380px) {
+  .hero-text-wrapper h1 {
+    font-size: clamp(3rem, 18vw, 5rem) !important;
+    letter-spacing: -0.03em !important;
+  }
+}
+
+/* Story section header — tight on mobile */
+.story-header-pad {
+  padding: 2.5rem 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+@media (min-width: 769px) {
+  .story-header-pad {
+    padding: 5rem 3rem 2rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
