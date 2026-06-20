@@ -470,9 +470,9 @@ function GateScreen({ onUnlock, dateStr, timeStr }: { onUnlock: () => void; date
             fontWeight: 900,
             fontSize: "18px",
             color: "#c9a84c",
-            letterSpacing: "-0.02em",
+            letterSpacing: "0.02em",
             lineHeight: 1,
-          }}>@</span>
+          }}>AT</span>
         </div>
         <span style={{
           fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
@@ -602,9 +602,9 @@ function Header({ scrolled, visible, muted, onToggleMute }: { scrolled: boolean;
           fontWeight: 900,
           fontSize: "22px",
           color: "#c9a84c",
-          letterSpacing: "-0.02em",
+          letterSpacing: "0.02em",
           lineHeight: 1,
-        }}>@</span>
+        }}>AT</span>
       </div>
 
       <nav className="nav-links">
