@@ -2910,6 +2910,9 @@ function LetterSection({
         </div>
       </div>
 
+      {/* Age Timer — moved here from between Gallery and Letter */}
+      {visible && <AgeTimerSection />}
+
       {/* Cake and Video Container */}
       <div
         ref={cakeContainerRef}
@@ -3316,7 +3319,6 @@ export default function VaultPage() {
       <HeroSection dateStr={dateStr} timeStr={timeStr} onFire={fire} />
       <StorySection />
       <GallerySection />
-      <AgeTimerSection />
       <LetterSection 
         dateStr={dateStr} 
         onFire={fire}
