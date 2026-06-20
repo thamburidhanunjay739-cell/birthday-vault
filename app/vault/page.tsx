@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 
 /* ─── DATA ──────────────────────────────────────────────────────────────── */
@@ -852,8 +853,7 @@ function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: s
       </div>
 
       {/* Refined casual photo */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/thalunew.jpg"
         alt={`${FRIEND_NAME}`}
         className="hero-img-casual"
@@ -862,7 +862,9 @@ function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: s
           opacity: visible ? 1 : 0,
           filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.06))",
         }}
-        onError={e => { (e.currentTarget as HTMLElement).style.display = "none"; }}
+        priority
+        width={1200}
+        height={900}
       />
 
       {/* Bottom info bar */}
