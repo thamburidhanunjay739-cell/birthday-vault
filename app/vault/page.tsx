@@ -113,7 +113,7 @@ const CHAPTERS = [
   { year: "2021", label: "Chapter I",   title: "The Day We Met",      body: "December 30, 2021 — The day we met in our college induction program, as strangers. Neither of us had any idea we were looking at our future best friend." },
   { year: "2022", label: "Chapter II",  title: "Finding Our Rhythm",  body: "2nd year settled in fast. The labs got harder, the late nights got longer — and somehow that just meant more time together figuring it all out, one subject at a time." },
   { year: "2023", label: "Chapter III", title: "New Beginnings",       body: "In January 2023, we went to watch our first movie together, Avatar. On March 11, 2023, a special person entered into his life." },
-  { year: "2024", label: "Chapter IV",  title: "The Golden Year",      body: "4th year. The April trip. The clinicals. The laughter that echoed down every hospital corridor. This is the chapter we'll tell everyone about." },
+  { year: "2024", label: "Chapter IV",  title: "End of an Era",        body: "The hostel life came to an end — and with it, the daily moments we took for granted. Distance grew between us, yet somehow the connection only deepened. Some goodbyes make you realise how much a chapter truly meant." },
   { year: "2025", label: "Chapter V",   title: "5th Year — Complete",  body: "We did it. Five full years of PharmD, done. This chapter closed quietly — but it carried everything. Every sleepless night finally meant something." },
   { year: "2026", label: "Chapter VI",  title: "Internship — Now",     body: "The 6th year internship begins. The real world, the real work — and still, the same person by my side. This chapter is just getting started." },
 ];
