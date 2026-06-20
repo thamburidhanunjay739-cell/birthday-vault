@@ -469,7 +469,7 @@ function GateScreen({ onUnlock, dateStr, timeStr }: { onUnlock: () => void; date
             fontFamily: "'Barlow Condensed', sans-serif",
             fontWeight: 900,
             fontSize: "18px",
-            color: "#c9a84c",
+            color: "#ffffff",
             letterSpacing: "0.02em",
             lineHeight: 1,
           }}>AT</span>
@@ -601,7 +601,7 @@ function Header({ scrolled, visible, muted, onToggleMute }: { scrolled: boolean;
           fontFamily: "'Barlow Condensed', sans-serif",
           fontWeight: 900,
           fontSize: "22px",
-          color: "#c9a84c",
+          color: "#ffffff",
           letterSpacing: "0.02em",
           lineHeight: 1,
         }}>AT</span>
@@ -2917,7 +2917,7 @@ function LetterSection({
           <p style={{
             fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
             fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase",
-            color: `rgba(201,168,76,0.5)`, marginBottom: "1rem",
+            color: "rgba(255,255,255,0.65)", marginBottom: "1rem",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "all 0.6s ease",
@@ -2925,7 +2925,7 @@ function LetterSection({
           <h2 style={{
             fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
             fontSize: "clamp(2rem, 5.5vw, 3.8rem)", lineHeight: 0.95,
-            color: BG, textTransform: "uppercase", letterSpacing: "-0.02em",
+            color: "#ffffff", textTransform: "uppercase", letterSpacing: "-0.02em",
           }}>
             <span style={{ display: "block", overflow: "hidden" }}>
               <span style={{
@@ -2933,7 +2933,7 @@ function LetterSection({
                 transform: visible ? "translateY(0)" : "translateY(100%)",
                 transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s"
               }}>
-                <InteractiveText text="From the" baseColor={BG} hoverColor={GOLD} />
+                <InteractiveText text="From the" baseColor="#ffffff" hoverColor="#ffffff" />
               </span>
             </span>
             <span style={{ display: "block", overflow: "hidden" }}>
@@ -2942,7 +2942,7 @@ function LetterSection({
                 transform: visible ? "translateY(0)" : "translateY(100%)",
                 transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s"
               }}>
-                <InteractiveText text="heart" baseColor={BG} hoverColor={GOLD} />
+                <InteractiveText text="heart" baseColor="#ffffff" hoverColor="#ffffff" />
               </span>
             </span>
           </h2>
@@ -3038,7 +3038,7 @@ function LetterSection({
                 transform: shown > i ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 0.6s ease, transform 0.6s ease",
                 marginBottom: isCloser ? "0" : line.style === "opener" ? "2.5rem" : line.style === "highlight" ? "1.8rem" : "1.4rem",
-                ...(line.style === "highlight" ? { borderLeft: `5px solid ${GOLD}`, paddingLeft: "1.5rem" } : {}),
+                ...(line.style === "highlight" ? { borderLeft: "5px solid #ffffff", paddingLeft: "1.5rem" } : {}),
               }}>
                 {isCloser ? (
                   <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -3047,7 +3047,7 @@ function LetterSection({
                       fontFamily: "'Barlow Condensed', sans-serif",
                       fontWeight: 900,
                       fontSize: "1.2rem",
-                      color: `rgba(201,168,76,0.85)`,
+                      color: "#ffffff",
                       textTransform: "uppercase",
                       letterSpacing: "0.05em",
                       lineHeight: 1.6,
@@ -3060,7 +3060,7 @@ function LetterSection({
                         fontFamily: "'Barlow Condensed', sans-serif",
                         fontWeight: 900,
                         fontSize: "1.2rem",
-                        color: BG,
+                        color: "#ffffff",
                         textTransform: "uppercase",
                         letterSpacing: "0.1em",
                       }}>Happy Birthday, {FRIEND_NAME} ❤️</p>
@@ -3080,7 +3080,7 @@ function LetterSection({
                     fontWeight: line.style === "opener" ? 900 : line.style === "highlight" ? 400 : 300,
                     fontSize: line.style === "opener" ? "1.5rem" : line.style === "highlight" ? "1rem" : "0.92rem",
                     lineHeight: 1.9,
-                    color: line.style === "highlight" ? GOLD : line.style === "opener" ? `rgba(201,168,76,0.85)` : "rgba(255,251,235,0.52)",
+                    color: line.style === "highlight" ? "#ffffff" : line.style === "opener" ? "#ffffff" : "rgba(255,255,255,0.75)",
                     textTransform: line.style === "opener" ? "uppercase" : "none",
                     letterSpacing: line.style === "opener" ? "0.05em" : "0",
                   }}>{line.text}</p>
