@@ -460,9 +460,19 @@ function GateScreen({ onUnlock, dateStr, timeStr }: { onUnlock: () => void; date
         position: "relative", zIndex: 10,
       }}>
         <div style={{
-          width: "36px", height: "36px", position: "relative", overflow: "hidden", borderRadius: "8px"
+          width: "36px", height: "36px", borderRadius: "8px",
+          background: "#0a0a0a",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          flexShrink: 0,
         }}>
-          <Image src="/logo1.jpeg" alt="Logo" fill style={{ objectFit: "cover" }} />
+          <span style={{
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontWeight: 900,
+            fontSize: "18px",
+            color: "#c9a84c",
+            letterSpacing: "-0.02em",
+            lineHeight: 1,
+          }}>@</span>
         </div>
         <span style={{
           fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
@@ -582,9 +592,19 @@ function Header({ scrolled, visible, muted, onToggleMute }: { scrolled: boolean;
       transition: "transform 0.3s ease, background 0.35s ease, backdrop-filter 0.35s ease, border-bottom 0.35s ease",
     }}>
       <div style={{
-        width: "40px", height: "40px", position: "relative", overflow: "hidden", borderRadius: "8px"
+        width: "40px", height: "40px", borderRadius: "8px",
+        background: "#0a0a0a",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0,
       }}>
-        <Image src="/logo1.jpeg" alt="Logo" fill style={{ objectFit: "cover" }} />
+        <span style={{
+          fontFamily: "'Barlow Condensed', sans-serif",
+          fontWeight: 900,
+          fontSize: "22px",
+          color: "#c9a84c",
+          letterSpacing: "-0.02em",
+          lineHeight: 1,
+        }}>@</span>
       </div>
 
       <nav className="nav-links">
@@ -3034,12 +3054,6 @@ function LetterSection({
                       lineHeight: 1.6,
                     }}>— With everything I have 🤝</p>
 
-                    {/* Logo */}
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div style={{ width: "80px", height: "80px", position: "relative", overflow: "hidden", borderRadius: "50%", border: `2px solid ${GOLD}`, flexShrink: 0, boxShadow: `0 0 20px rgba(201,168,76,0.3)` }}>
-                        <Image src="/logo1.jpeg" alt="Signature Logo" fill style={{ objectFit: "cover" }} />
-                      </div>
-                    </div>
 
                     {/* Wish text after logo */}
                     <div>
