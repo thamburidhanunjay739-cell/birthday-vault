@@ -1319,17 +1319,18 @@ function AgeTimerSection() {
       setAge({ years, months, days, hours, mins, secs });
 
       // ── Next birthday (dynamic, works forever) ──
+      // Count down to midnight IST (00:00 IST = 18:30 UTC the PREVIOUS day)
+      // so the timer shows time until birthday starts, not exact birth time.
       const bm = BIRTH_UTC.getUTCMonth();
       const bd = BIRTH_UTC.getUTCDate();
-      const bh = BIRTH_UTC.getUTCHours();
-      const bmin = BIRTH_UTC.getUTCMinutes();
-      const thisYearBday = Date.UTC(n.getUTCFullYear(), bm, bd, bh, bmin, 0);
+      // Midnight IST on Jun 21 = Jun 20 18:30 UTC (IST is UTC+5:30)
+      const thisYearBday = Date.UTC(n.getUTCFullYear(), bm, bd - 1, 18, 30, 0);
       const nextBdayMs = thisYearBday > now
         ? thisYearBday
-        : Date.UTC(n.getUTCFullYear() + 1, bm, bd, bh, bmin, 0);
+        : Date.UTC(n.getUTCFullYear() + 1, bm, bd - 1, 18, 30, 0);
       const prevBdayMs = thisYearBday <= now
         ? thisYearBday
-        : Date.UTC(n.getUTCFullYear() - 1, bm, bd, bh, bmin, 0);
+        : Date.UTC(n.getUTCFullYear() - 1, bm, bd - 1, 18, 30, 0);
       const nextBdayDate = new Date(nextBdayMs);
       const prevBdayDate = new Date(prevBdayMs);
       const nextAgeVal = nextBdayDate.getUTCFullYear() - BIRTH_UTC.getUTCFullYear();
