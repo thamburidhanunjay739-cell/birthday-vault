@@ -122,8 +122,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 2rem 3rem 2rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 4rem 2rem 2rem 2rem;
+  border-bottom: none;
   position: relative;
   z-index: 2;
 }
@@ -168,9 +168,21 @@ body {
 }
 
 /* Desktop: image is absolutely positioned relative to hero-section */
-/* Mobile: image hidden, hero shows text only */
+/* Mobile: image displayed as a centered, stylized card */
 .hero-img-casual {
-  display: none;
+  display: block;
+  width: calc(100% - 2.5rem);
+  max-width: 460px;
+  height: 340px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  margin: 0 auto 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 1;
+  will-change: opacity, transform;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.35s ease, opacity 0.8s ease;
 }
 
 .hero-img-suit {
@@ -185,6 +197,7 @@ body {
     right: 0;
     left: auto;
     width: auto;
+    max-width: none;
     height: calc(100% - 125px); /* Limit height to fit between header (64px) and info-bar (61px) */
     z-index: 1;
     object-fit: contain;
@@ -194,6 +207,11 @@ body {
     transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.35s ease, opacity 0.8s ease;
     mask-image: linear-gradient(to bottom, black 75%, transparent 98%);
     -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 98%);
+    /* Reset margins & roundness from mobile */
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
   }
 
   .hero-img-suit {

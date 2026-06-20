@@ -886,7 +886,7 @@ function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: s
         priority
         // fetchpriority="high" is implied by priority, but sizes tells the browser
         // which resolution to request (avoids downloading a 6000px image for a 900px slot)
-        sizes="(max-width: 768px) 0px, (max-width: 1200px) 50vw, 40vw"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
         width={1200}
         height={900}
         quality={85}
@@ -1162,7 +1162,6 @@ function GallerySection() {
                   />
                   <div className="masonry-hover">
                     <span className="masonry-tag">{photo.tag}</span>
-                    <p className="masonry-caption">{photo.caption}</p>
                     <p className="masonry-date">{photo.date}</p>
                   </div>
                 </div>
@@ -1260,7 +1259,7 @@ function GallerySection() {
                 <span style={{
                   fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900,
                   fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.1em", color: INK,
-                }}>{PHOTOS[lightbox].caption}</span>
+                }}>{PHOTOS[lightbox].tag}</span>
                 <span style={{
                   fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
                   fontSize: "11px", letterSpacing: "0.15em", color: "rgba(0,0,0,0.4)", marginLeft: "12px",
