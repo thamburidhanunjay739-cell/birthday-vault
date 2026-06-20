@@ -2911,43 +2911,6 @@ function LetterSection({
       {/* Floating Gold Dust Backdrop */}
       {visible && <GoldDust />}
 
-      {/* Section Header */}
-      <div className="letter-header-pad">
-        <div style={{ padding: "0 0 2rem 0", borderBottom: `1px solid rgba(255,255,255,0.07)`, marginBottom: "2rem" }}>
-          <p style={{
-            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
-            fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase",
-            color: "rgba(255,255,255,0.65)", marginBottom: "1rem",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "all 0.6s ease",
-          }}>A Letter</p>
-          <h2 style={{
-            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
-            fontSize: "clamp(2rem, 5.5vw, 3.8rem)", lineHeight: 0.95,
-            color: "#ffffff", textTransform: "uppercase", letterSpacing: "-0.02em",
-          }}>
-            <span style={{ display: "block", overflow: "hidden" }}>
-              <span style={{
-                display: "block",
-                transform: visible ? "translateY(0)" : "translateY(100%)",
-                transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s"
-              }}>
-                <InteractiveText text="From the" baseColor="#ffffff" hoverColor="#ffffff" />
-              </span>
-            </span>
-            <span style={{ display: "block", overflow: "hidden" }}>
-              <span style={{
-                display: "block",
-                transform: visible ? "translateY(0)" : "translateY(100%)",
-                transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s"
-              }}>
-                <InteractiveText text="heart" baseColor="#ffffff" hoverColor="#ffffff" />
-              </span>
-            </span>
-          </h2>
-        </div>
-      </div>
 
       {/* Age Timer — moved here from between Gallery and Letter */}
       {visible && <AgeTimerSection />}
