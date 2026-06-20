@@ -3274,7 +3274,7 @@ export default function VaultPage() {
       <ConfettiCanvas r={canvasRef} />
       {/* Hidden audio elements */}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={audioRef} src="/thalumusic.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/newmusic.mpeg" loop preload="auto" />
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio ref={bdayAudioRef} src="/birthdaysong.mp3" loop preload="auto" />
       <Header scrolled={scrolled} visible={headerVisible} muted={muted} onToggleMute={handleToggleMute} />
