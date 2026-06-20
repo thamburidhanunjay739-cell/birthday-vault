@@ -802,9 +802,11 @@ function GlitchWord({
 /* ─── HERO ──────────────────────────────────────────────────────────────────── */
 function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: string; onFire: () => void }) {
   const [visible, setVisible] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 120);
+    // Reduced from 120ms → 50ms so text animations begin almost instantly
+    const t = setTimeout(() => setVisible(true), 50);
     return () => clearTimeout(t);
   }, []);
 
@@ -852,19 +854,24 @@ function HeroSection({ dateStr, timeStr, onFire }: { dateStr: string; timeStr: s
         </div>
       </div>
 
-      {/* Refined casual photo */}
+      {/* Refined casual photo — priority loaded, GPU-composited, blur placeholder */}
       <Image
         src="/thalunew.jpg"
         alt={`${FRIEND_NAME}`}
         className="hero-img-casual"
         id="hero-photo"
         style={{
-          opacity: visible ? 1 : 0,
+          opacity: imgLoaded ? (visible ? 1 : 0) : 0,
           filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.06))",
         }}
+        onLoad={() => setImgLoaded(true)}
         priority
+        // fetchpriority="high" is implied by priority, but sizes tells the browser
+        // which resolution to request (avoids downloading a 6000px image for a 900px slot)
+        sizes="(max-width: 768px) 0px, (max-width: 1200px) 50vw, 40vw"
         width={1200}
         height={900}
+        quality={85}
       />
 
       {/* Bottom info bar */}
